@@ -1,6 +1,6 @@
 /**
  * vCom is a chat service consisting of client and server application that encrypts every message send and thus allows a secure and for third parties not readable communication.
- * Copyright (C) 2015 Kai Brandenbusch, Björn Lange, Christian Langer, Daniel Theis
+ * Copyright (C) 2016 Kai Brandenbusch, Björn Lange, Christian Langer, Daniel Theis
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
