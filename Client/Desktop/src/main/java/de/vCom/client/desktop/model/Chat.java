@@ -17,7 +17,6 @@
  */
 package de.vCom.client.desktop.model;
 
-public class VComModel 
-{
+public class Chat {
 
 }
