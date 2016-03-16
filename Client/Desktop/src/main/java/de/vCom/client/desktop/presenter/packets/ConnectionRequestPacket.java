@@ -1,5 +1,6 @@
 /**
- * vCom is a chat service consisting of client and server application that encrypts every message send and thus allows a secure and for third parties not readable communication.
+ * vCom is a chat service consisting of client and server application that encrypts every message
+ * send and thus allows a secure and for third parties not readable communication.
  * Copyright (C) 2016 Kai Brandenbusch, Björn Lange, Christian Langer, Daniel Theis
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,8 +22,11 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import de.vCom.client.desktop.model.UserIdentifier;
+
 /**
- * Initial package that requests to open a connection. Send after a secure connection has been established.
+ * Initial package that requests to open a connection. Send after a secure connection has been
+ * established.
  * @author Björn Lange
  */
 public class ConnectionRequestPacket extends Packet {
@@ -31,22 +35,40 @@ public class ConnectionRequestPacket extends Packet {
 	 */
 	public static final int PROTOCOL_IDENTIFIER = 256;
 	
-	// TODO: UserIdentifier attribute
-	
+	private UserIdentifier userIdentifier;
+	private int deviceIdentifier;
 	private byte[] serverPassword;
-	
+
 	/**
-	 * Default constructor.
+	 * Gets the identifier of the user to log in.
+	 * @return The identifier of the user to log in.
 	 */
-	public ConnectionRequestPacket() { }
-	
-	// TODO: Packet constructor
-	
-	// TODO: UserIdentifier getter/setter
-	
-	@Override
-	public void readFrom(DataInputStream input) throws IOException {
-		throw new UnsupportedOperationException("Client is not allowed to receive a ConnectionRequestPackage!");
+	public UserIdentifier getUserIdentifier() {
+		return userIdentifier;
+	}
+
+	/**
+	 * Sets the identifier of the user to log in.
+	 * @param userIdentifier The identifier of the user to log in.
+	 */
+	public void setUserIdentifier(UserIdentifier userIdentifier) {
+		this.userIdentifier = userIdentifier;
+	}
+
+	/**
+	 * Gets the identifier of the device to log in.
+	 * @return The identifier of the device to log in.
+	 */
+	public int getDeviceIdentifier() {
+		return deviceIdentifier;
+	}
+
+	/**
+	 * Sets the identifier of the device to log in.
+	 * @param deviceIdentifier The identifier of the device to log in.
+	 */
+	public void setDeviceIdentifier(int deviceIdentifier) {
+		this.deviceIdentifier = deviceIdentifier;
 	}
 
 	/**
@@ -64,11 +86,37 @@ public class ConnectionRequestPacket extends Packet {
 	public void setServerPassword(byte[] serverPassword) {
 		this.serverPassword = serverPassword;
 	}
+	
+	/**
+	 * Default constructor.
+	 */
+	public ConnectionRequestPacket() { }
+	
+	/**
+	 * Creates a new ConnectionRequestPacket.
+	 * @param userIdentifier The user identifier to log in with.
+	 * @param deviceIdentifier The device identifier to log in with.
+	 * @param serverPassword The password for the server.
+	 */
+	public ConnectionRequestPacket(UserIdentifier userIdentifier, int deviceIdentifier,
+			byte[] serverPassword) {
+		super();
+		this.userIdentifier = userIdentifier;
+		this.deviceIdentifier = deviceIdentifier;
+		this.serverPassword = serverPassword;
+	}
+
+	@Override
+	public void readFrom(DataInputStream input) throws IOException {
+		throw new UnsupportedOperationException(
+				"Client is not allowed to receive a ConnectionRequestPacket!");
+	}
 
 	@Override
 	public void writeTo(DataOutputStream output) throws IOException {
 		output.writeInt(PROTOCOL_IDENTIFIER);
-		// TODO: write UserIdentifier
+		userIdentifier.writeTo(output);
+		output.writeInt(deviceIdentifier);
 		output.writeInt(serverPassword.length);
 		output.write(serverPassword);
 	}
