@@ -17,18 +17,13 @@
  */
 package de.vCom.client.desktop.model;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
-
 public class UserIdentifier {
-
+	
 	/**
-	 * Writes this identifier to the given stream. This happens in a manner, that the identifier
-	 * can be recovered when reading the stream.
-	 * @param output The stream to write to.
-	 * @throws IOException If writing to the stream fails.
+	 * Gets the string representation of this identifier. The re4turned representation can be used for network transfers.
+	 * @return The string representation of this identifier.
 	 */
-	public void writeTo(DataOutputStream output) throws IOException {
-		// TODO
+	public String getStringRepresentation() {
+		return ""; // TODO
 	}
 }

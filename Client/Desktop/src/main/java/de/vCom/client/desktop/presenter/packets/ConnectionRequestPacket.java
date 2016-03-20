@@ -115,7 +115,10 @@ public class ConnectionRequestPacket extends Packet {
 	@Override
 	public void writeTo(DataOutputStream output) throws IOException {
 		output.writeInt(PROTOCOL_IDENTIFIER);
-		userIdentifier.writeTo(output);
+		String id = userIdentifier.getStringRepresentation();
+		byte[] idData = id.getBytes("UTF-8");
+		output.writeInt(idData.length);
+		output.write(idData);
 		output.writeInt(deviceIdentifier);
 		output.writeInt(serverPassword.length);
 		output.write(serverPassword);
