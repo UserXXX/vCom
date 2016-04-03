@@ -19,6 +19,7 @@ package de.vCom.client.desktop.presenter.packets;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.Date;
 
 /**
  * Packet that notifies the client, that the server wants to synchronize the friend- and blocklist
@@ -31,15 +32,39 @@ public class RequestUserListsSyncPacket extends Packet {
 	 */
 	public static final int PROTOCOL_IDENTIFIER = 259;
 
+	private Date friendlistTimestamp;
+	private Date blocklistTimestamp;
+	
+	/**
+	 * Gets the timestamp corresponding to the state of the friendlist.
+	 * @return The timestamp corresponding to the state of the friendlist.
+	 */
+	public Date getFriendlistTimestamp() {
+		return friendlistTimestamp;
+	}
+
+	/**
+	 * Gets the timestamp corresponding to the state of the blocklist.
+	 * @return The timestamp corresponding to the state of the blocklist.
+	 */
+	public Date getBlocklistTimestamp() {
+		return blocklistTimestamp;
+	}
+	
+	/**
+	 * Creates a new RequestUserListsSyncPacket.
+	 */
+	public RequestUserListsSyncPacket() { }
+	
 	@Override
 	public void readFrom(DataInputStream input) throws IOException {
-		// TODO Auto-generated method stub
-		
+		friendlistTimestamp = new Date(input.readLong());
+		blocklistTimestamp = new Date(input.readLong());
 	}
 
 	@Override
 	public void writeTo(DataOutputStream output) throws IOException {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException(
+				"Client is not allowed to send a RequestUserListsSyncPacket!");
 	}
 }
