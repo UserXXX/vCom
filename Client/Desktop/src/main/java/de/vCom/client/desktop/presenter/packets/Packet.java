@@ -20,11 +20,35 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import de.vCom.client.desktop.model.User;
+import de.vCom.client.desktop.model.UserList;
+
 /**
  * Abstract parent class for all client packets.
  * @author Björn Lange
  */
 public abstract class Packet {
+	/**
+	 * Writes a USerList to the given stream.
+	 * @param output The stream to write to.
+	 * @param list The list to write.
+	 * @throws NullPointerException If output or list is null.
+	 * @throws IOException If an I/O error occurs.
+	 */
+	protected void writeUserList(DataOutputStream output, UserList list) throws IOException {
+		if (output == null || list == null) {
+			throw new NullPointerException();
+		}
+		
+		output.writeInt(list.size());
+		for (User user : list) {
+			String strIdentifier = user.getUserIdentifier().getStringRepresentation();
+			byte[] idData = strIdentifier.getBytes("UTF-8");
+			output.writeInt(idData.length);
+			output.write(idData);
+		}
+	}
+	
 	/**
 	 * Reads the packet body from the given input stream. The header int has already been read.
 	 * @param input The input stream to read from.
