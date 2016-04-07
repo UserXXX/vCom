@@ -19,8 +19,12 @@ package de.vCom.client.desktop.presenter.packets;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.LinkedList;
+import java.util.List;
 
 import de.vCom.client.desktop.model.User;
+import de.vCom.client.desktop.model.UserIdentifier;
 import de.vCom.client.desktop.model.UserList;
 
 /**
@@ -29,13 +33,42 @@ import de.vCom.client.desktop.model.UserList;
  */
 public abstract class Packet {
 	/**
-	 * Writes a USerList to the given stream.
+	 * Reads a list of {@code UserIsentifier}s from the given stream.
+	 * @param input The stream to read from.
+	 * @return The read list.
+	 * @throws NullPointerException If {@code input} is {@code null}.
+	 * @throws IOException If an I/O error occurs.
+	 */
+	protected List<UserIdentifier> readUserIdentifierList(DataInputStream input)
+			throws IOException {
+		if (input == null) {
+			throw new NullPointerException();
+		}
+		
+		List<UserIdentifier> list = new LinkedList<>();
+		int length = input.readInt();
+		for (int i = 0; i < length; i++) {
+			int idLength = input.readInt();
+			byte[] idData = new byte[idLength];
+			input.readFully(idData);
+			String strIdentifier = new String(idData, StandardCharsets.UTF_8);
+			UserIdentifier identifier = new UserIdentifier(strIdentifier);
+			list.add(identifier);
+		}
+		
+		return list;
+	}
+	
+	/**
+	 * Writes a list of {@code UserIdentifier}s to the given stream. The source for the identifiers
+	 * is a list of {@code User} objects. Every objects identifier is written.
 	 * @param output The stream to write to.
 	 * @param list The list to write.
 	 * @throws NullPointerException If output or list is null.
 	 * @throws IOException If an I/O error occurs.
 	 */
-	protected void writeUserList(DataOutputStream output, UserList list) throws IOException {
+	protected void writeUserIdentifierList(DataOutputStream output, UserList list)
+			throws IOException {
 		if (output == null || list == null) {
 			throw new NullPointerException();
 		}
@@ -43,7 +76,7 @@ public abstract class Packet {
 		output.writeInt(list.size());
 		for (User user : list) {
 			String strIdentifier = user.getUserIdentifier().getStringRepresentation();
-			byte[] idData = strIdentifier.getBytes("UTF-8");
+			byte[] idData = strIdentifier.getBytes(StandardCharsets.UTF_8);
 			output.writeInt(idData.length);
 			output.write(idData);
 		}

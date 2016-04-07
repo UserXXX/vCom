@@ -135,11 +135,11 @@ public class UserListsSyncPacket extends Packet {
 		output.writeInt(PROTOCOL_IDENTIFIER);
 		output.writeByte(friendlistFlag);
 		if (friendlist != null) {
-			writeUserList(output, friendlist);
+			writeUserIdentifierList(output, friendlist);
 		}
 		output.writeByte(blocklistFlag);
 		if (blocklist != null) {
-			writeUserList(output, blocklist);
+			writeUserIdentifierList(output, blocklist);
 		}
 	}
 
