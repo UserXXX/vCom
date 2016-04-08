@@ -32,7 +32,7 @@ public class BroadcastMessagePacket extends Packet {
 	/**
 	 * Protocol identifier for this packet.
 	 */
-	public static final int PROTOCOL_IDENTIFIER = 262;
+	public static final int PROTOCOL_IDENTIFIER = 263;
 
 	private String message;
 	
