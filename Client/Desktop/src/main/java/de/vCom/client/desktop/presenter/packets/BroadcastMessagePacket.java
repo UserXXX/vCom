@@ -51,10 +51,7 @@ public class BroadcastMessagePacket extends Packet {
 	
 	@Override
 	public void readFrom(DataInputStream input) throws IOException {
-		int length = input.readInt();
-		byte[] msgData = new byte[length];
-		input.readFully(msgData);
-		message = new String(msgData, StandardCharsets.UTF_8);
+		message = new String(readByteArray(input), StandardCharsets.UTF_8);
 	}
 
 	@Override
